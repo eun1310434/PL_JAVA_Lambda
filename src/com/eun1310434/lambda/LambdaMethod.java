@@ -53,19 +53,14 @@ class LambdaMethod_MethodReference {
 		return obj;
 	}
 }
+
 public class LambdaMethod {
 	public static void main(String[] ar) {
 		LambdaMethod_I i1 = LambdaMethod_MethodReference.get("±è½ÂÇö", LambdaMethod_C_a::new);
 		LambdaMethod_C_b i2 = LambdaMethod_MethodReference.get("¹Ú½ÂÇö", LambdaMethod_C_b::new);
 		i1.print();
-		//i2.print();
+		i2.print();
 		i2.printB();
 		System.out.println();
-		
-		String[] strings = new String[]{"D", "B", "A", "C"};
-		Arrays.sort(strings, String::compareToIgnoreCase);
-		//Á¤·Ä -> int java.lang.String.compareToIgnoreCase(String str)
-		
-		for(String s: strings) {System.out.print(s + "\t");}
 	}
 }
