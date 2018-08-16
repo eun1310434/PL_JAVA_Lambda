@@ -70,3 +70,5 @@ public class LambdaClassDeclare {
 		i2.print();
 	}
 }
+
+

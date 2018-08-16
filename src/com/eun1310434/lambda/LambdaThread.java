@@ -23,7 +23,7 @@ public class LambdaThread {
 		new Thread(new Runnable() {
 			public void run() {
 				for (int i = 0; i < 3; i++) {
-					System.out.println("Basic use");
+					System.out.println("Basic use : "+i);
 				}
 			}
 		}).start();
@@ -31,7 +31,7 @@ public class LambdaThread {
 		
 		new Thread(() -> {
 			for (int i = 0; i < 3; i++) {
-				System.out.println("lambda Thread use");
+				System.out.println("lambda Thread use : "+i);
 			}
 		}).start();
 	}

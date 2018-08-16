@@ -69,3 +69,5 @@ public class LambdaArrayListFilter {
 		System.out.println();		
 	}
 }
+
+
