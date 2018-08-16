@@ -1,27 +1,42 @@
 /*==================================================================================================
 ¡à INFORMATION
-  ¡Û Data : 15.08.2018
+  ¡Û Data : 16.08.2018
   ¡Û Mail : eun1310434@naver.com
   ¡Û WebPage : https://eun1310434.github.io/
   ¡Û Reference
      - Hello Java Programming
+     - https://www.baeldung.com/java-comparator-comparable
      
 ¡à FUNCTION
   ¡Û 
    
 ¡à Study
+  ¡Û Comparable 
+    - This is called the class¡¯s ¡°natural ordering¡±.
+    - It is an interface defining a strategy of comparing an object with 
+      other objects of the same type.
+    - "ClassName" implements Comparable<"ItemClassName"> 
+    
+  ¡Û Comparator
+    - The Comparator interface defines a compare(arg1, arg2) method with two arguments 
+      which represent compared objects and works similarly to the Comparable.compareTo() method.
+    - "ClassComparatorName" implements Comparator<"ItemClassName"> 
+
   ¡Û LambdaComparator
-   - 
+    - ClassName::ClassMethodName
+    - parameter->{return parameter * 10;};
+    - (ClassName parameterA, ClassName parameterB)
+      ->{return parameterA - parameterB;};
 ==================================================================================================*/
 package com.eun1310434.lambda;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-class LambdaComparator_class implements Comparable<LambdaComparator_class> {
+class ComparableItem implements Comparable<ComparableItem> {
 	private Integer number;
 	
-	public LambdaComparator_class(Integer n) {
+	public ComparableItem(Integer n) {
 		this.number = n;
 	}
 	
@@ -34,32 +49,35 @@ class LambdaComparator_class implements Comparable<LambdaComparator_class> {
 	}
 
 	@Override
-	public int compareTo(LambdaComparator_class other) {
+	public int compareTo(ComparableItem other) {
 		return this.getNumber() - other.getNumber();
 	}	
-	
-	public static int ASC(LambdaComparator_class n1, LambdaComparator_class n2) {
-		return n1.getNumber() - n2.getNumber();
-	}	
-	
-	public static int DESC(LambdaComparator_class n1, LambdaComparator_class n2) {
-		return n2.getNumber() - n1.getNumber();
-	}
 }
 
-class LambdaComparator_ASC implements Comparator<LambdaComparator_class> {
+
+class Comparator_ASC implements Comparator<ComparableItem> {
 	@Override
-	public int compare(LambdaComparator_class arg0, LambdaComparator_class arg1) {
+	public int compare(ComparableItem arg0, ComparableItem arg1) {
 		// TODO Auto-generated method stub
 		return arg0.getNumber() - arg1.getNumber();
 	}
 }
 
-class LambdaComparator_DESC implements Comparator<LambdaComparator_class> {
+class Comparator_DESC implements Comparator<ComparableItem> {
 	@Override
-	public int compare(LambdaComparator_class arg0, LambdaComparator_class arg1) {
+	public int compare(ComparableItem arg0, ComparableItem arg1) {
 		// TODO Auto-generated method stub
 		return arg1.getNumber() - arg0.getNumber();
+	}
+}
+
+class Comparator_Tool {
+	public int ASC(ComparableItem n1, ComparableItem n2) {
+		return n1.getNumber() - n2.getNumber();
+	}	
+	
+	public int DESC(ComparableItem n1, ComparableItem n2) {
+		return n2.getNumber() - n1.getNumber();
 	}
 }
 
@@ -67,43 +85,74 @@ class LambdaComparator_DESC implements Comparator<LambdaComparator_class> {
 public class LambdaComparator {
 	public static void main(String[] ar) {
 
-		List<LambdaComparator_class> numbers = Arrays.asList(
-				new LambdaComparator_class(4), 
-				new LambdaComparator_class(3),
-				new LambdaComparator_class(1), 
-				new LambdaComparator_class(2),
-				new LambdaComparator_class(5)
+		List<ComparableItem> numbers = Arrays.asList(
+				new ComparableItem(4), 
+				new ComparableItem(3),
+				new ComparableItem(1), 
+				new ComparableItem(2),
+				new ComparableItem(5)
 		);
+
 		
-		System.out.println("1-1 Comparator :: compare - ASC");
-		numbers.sort(new LambdaComparator_ASC());	
-		numbers.stream().forEach(LambdaComparator_class::print);
+		System.out.println("1-0 Comparable :: compareTo - ASC");
+		numbers.sort(ComparableItem::compareTo);
+		numbers.stream().forEach(ComparableItem::print);
 		System.out.println("");System.out.println("");
 
-		System.out.println("1-2 Comparator :: compare - DESC");
-		numbers.sort(new LambdaComparator_DESC());
-		numbers.stream().forEach(LambdaComparator_class::print);		
+		
+		System.out.println("2-1 Comparator :: compare - ASC");
+		numbers.sort(new Comparator_ASC()::compare); 
+		numbers.sort(new Comparator_ASC());
+		numbers.stream().forEach(ComparableItem::print);
 		System.out.println("");System.out.println("");
 
-		System.out.println("3-0 Comparable :: compareTo - ASC");
-		numbers.sort(LambdaComparator_class::compareTo);	
-		numbers.stream().forEach(LambdaComparator_class::print);
+		
+		System.out.println("2-2 Comparator :: compare - DESC");
+		numbers.sort(new Comparator_DESC()::compare);
+		numbers.sort(new Comparator_DESC());
+		numbers.stream().forEach(ComparableItem::print);		
 		System.out.println("");System.out.println("");
 
-		System.out.println("4-1 static Compare :: ASC");
-		numbers.sort(LambdaComparator_class::ASC);	
-		numbers.stream().forEach(LambdaComparator_class::print);
+
+		System.out.println("2-3 Comparator :: compareLambda - ASC");
+		Comparator<ComparableItem> comparatorLambda_ASC
+		 = (ComparableItem itemA, ComparableItem itemB) 
+		    -> {return itemA.getNumber() - itemB.getNumber();};
+		numbers.sort(comparatorLambda_ASC);
+		numbers.stream().forEach(ComparableItem::print);		
 		System.out.println("");System.out.println("");
 
-		System.out.println("4-2 static Compare :: DESC");
-		numbers.sort(LambdaComparator_class::DESC);	
-		numbers.stream().forEach(LambdaComparator_class::print);
+
+		System.out.println("2-4 Comparator :: compareLambda - DESC");
+		Comparator<ComparableItem> comparatorLambda_DESC
+		 = (ComparableItem itemA, ComparableItem itemB) 
+		    -> itemB.getNumber() - itemA.getNumber();
+		numbers.sort(comparatorLambda_DESC);
+		numbers.stream().forEach(ComparableItem::print);		
 		System.out.println("");System.out.println("");
 		
 
-		System.out.println("5-0 string :: compareToIgnoreCase");
-		String[] strings = new String[]{"D", "B", "A", "C"};
+		System.out.println("3-1 static Compare :: ASC");
+		numbers.sort(new Comparator_Tool()::ASC);	
+		numbers.stream().forEach(ComparableItem::print);
+		System.out.println("");System.out.println("");
+
+		
+		System.out.println("3-2 static Compare :: DESC");
+		numbers.sort(new Comparator_Tool()::DESC);	
+		numbers.stream().forEach(ComparableItem::print);
+		System.out.println("");System.out.println("");
+	
+		
+		System.out.println("4-1 string :: compareToIgnoreCase");
+		String[] strings = new String[]{"D", "B", "A", "C","d","b","a","c"};
 		Arrays.sort(strings, String::compareToIgnoreCase);
+		Arrays.stream(strings).forEach(s -> {System.out.print(s + "\t");});
+		System.out.println("");System.out.println("");
+		
+		
+		System.out.println("4-2 string :: compareTo");
+		Arrays.sort(strings, String::compareTo);
 		Arrays.stream(strings).forEach(s -> {System.out.print(s + "\t");});
 	}
 }
